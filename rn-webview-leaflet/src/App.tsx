@@ -10,11 +10,11 @@ import { Platform, StyleSheet } from 'react-native';
 import isEqual from 'lodash.isequal';
 import WebView, { WebViewMessageEvent } from 'react-native-webview';
 import LoadingIndicator from './LoadingIndicator';
-import type { LeafletMapProps, LeafletProps } from './Leaflet.types';
+import type { LeafletMapProps, LeafletProps } from './types/Leaflet.types';
 
 const LEAFLET_HTML_SOURCE = Platform.select({
-  ios: { uri: 'Leaflet.html' },
-  android: { uri: 'file:///android_asset/custom/Leaflet.html' },
+  ios: require('../android/app/src/main/assets/Leaflet.html'),
+  android: { uri: 'file:///android_asset/Leaflet.html' },
 });
 
 const styles = StyleSheet.create({

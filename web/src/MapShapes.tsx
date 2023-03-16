@@ -11,7 +11,7 @@ import {
   Rectangle,
   RectangleProps,
 } from 'react-leaflet';
-import { MapShape } from './model';
+import { MapShape } from './types/model';
 
 export const Shape = (props: MapShape) => {
   switch (props.shapeType) {

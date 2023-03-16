@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { LeafletMapProps } from './Leaflet.types';
+import { LeafletMapProps } from './types/Leaflet.types';
 import { MapComponent } from './MapComponent';
-import { LeafletWebViewEvent } from './model';
+import { LeafletWebViewEvent } from './types/model';
 import './styles/index.css';
 
 const sendMessage = (message: LeafletWebViewEvent) => {

@@ -4,11 +4,11 @@ export type {
   LatLngLiteral,
   MapOptions,
   LeafletMapProps,
-} from './Leaflet.types';
+} from './types/Leaflet.types';
 export type {
   LeafletWebViewEvent,
   MapMarker,
   MapLayer,
   MapLayerType,
   MapShape,
-} from './model';
+} from './types/model';

@@ -26,8 +26,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "postbuild": "gulp build && npm run copydist",
-    "copyAndroid": "cp ../../libs/shared-mobile/assets/rn-leaflet/ ../../apps/mobile-sgsecure/android/app/src/main/assets/custom/",
-    "copydist": "cp -R ./dist/ ../../libs/shared-mobile/assets/rn-leaflet/ && npm run copyAndroid"
+    "copydist": "cp -R ./dist/ ../../libs/shared-mobile/assets/"
   },
   "eslintConfig": {
     "extends": [

@@ -20,10 +20,10 @@ import {
 } from 'react-leaflet';
 import Measure from 'react-measure';
 import './styles/markers.css';
-import { LeafletProps } from './Leaflet.types';
+import { LeafletProps } from './types/Leaflet.types';
 import { MapMarkers } from './MapMarkers';
 import { MapShapes } from './MapShapes';
-import { MapLayer } from './model';
+import { MapLayer } from './types/model';
 import EventHandle from './EventHandle';
 import MyMarker from './MyMarker';
 

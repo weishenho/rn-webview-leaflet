@@ -6,7 +6,7 @@ import MarkerClusterGroup from "react-leaflet-cluster";
 import "leaflet.markercluster";
 import "react-leaflet-cluster/lib/assets/MarkerCluster.css";
 import "react-leaflet-cluster/lib/assets/MarkerCluster.Default.css";
-import { Dimensions, MapMarker as MapMarkerType } from "./model";
+import { Dimensions, MapMarker as MapMarkerType } from "./types/model";
 
 export const createDivIcon = (mapMarker: MapMarkerType): DivIcon => {
   const [x, y]: Dimensions = mapMarker.size ?? [24, 24];

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useMapEvents } from 'react-leaflet';
-import { LeafletWebViewEvent } from './model';
+import { LeafletWebViewEvent } from './types/model';
 import type {
   LatLng,
   LatLngBoundsLiteral,
