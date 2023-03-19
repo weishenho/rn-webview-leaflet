@@ -1,21 +1,55 @@
-import { icon, LatLngLiteral } from 'leaflet';
-import React from 'react';
-import { Marker } from 'react-leaflet';
+import { icon } from "leaflet";
+import React from "react";
+import { Marker, useMapEvents } from "react-leaflet";
+import type {
+  LatLng,
+  LatLngBoundsLiteral,
+  LatLngLiteral,
+  LeafletMouseEvent,
+  Map as LeafletMap,
+} from "leaflet";
 type Props = {
-  posClicked?: LatLngLiteral;
+  position: LatLngLiteral;
+  toLatLngLiteral: (latLng: LatLng) => LatLngLiteral;
+  bounds: (map?: LeafletMap | null) => LatLngBoundsLiteral;
+  center: (map?: LeafletMap | null) => LatLngLiteral;
 };
-
-const MyMarker = ({ posClicked }: Props) => {
+const onMessage = (msg: { [x: string]: any }) => {
+  console.log(msg);
+};
+const MyMarker = ({ position, bounds, center }: Props) => {
+  const map = useMapEvents({
+    move: () => {
+      onMessage({
+        tag: "onMove",
+        bounds: bounds(map),
+        mapCenter: center(map),
+        zoom: map.getZoom()!,
+      });
+    },
+    moveend: () => {
+      onMessage({
+        tag: "onMoveEnd",
+        bounds: bounds(map),
+        mapCenter: center(map),
+        zoom: map.getZoom()!,
+      });
+    },
+    movestart: () => {
+      onMessage({
+        tag: "onMoveStart",
+        bounds: bounds(map),
+        mapCenter: center(map),
+        zoom: map.getZoom()!,
+      });
+    },
+  });
   return (
     <Marker
-      position={
-        posClicked ?? {
-          lat: 1.3198801354409218,
-          lng: 103.90226028148622,
-        }
-      }
+      position={position}
       icon={icon({
-        iconUrl: './marker-icon.png',
+        iconUrl: "./marker-icon.png",
+        iconSize:[24,24]
       })}
       key="mymarker01"
     />

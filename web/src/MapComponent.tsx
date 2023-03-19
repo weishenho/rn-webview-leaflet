@@ -5,9 +5,9 @@ import {
   LatLngExpression,
   LatLngLiteral,
   Map as LeafletMap,
-} from 'leaflet';
-import 'leaflet/dist/leaflet.css';
-import React, { useEffect, useState } from 'react';
+} from "leaflet";
+import "leaflet/dist/leaflet.css";
+import React, { useEffect, useState } from "react";
 import {
   ImageOverlay,
   ImageOverlayProps,
@@ -17,15 +17,15 @@ import {
   TileLayerProps,
   WMSTileLayer,
   WMSTileLayerProps,
-} from 'react-leaflet';
-import Measure from 'react-measure';
-import './styles/markers.css';
-import { LeafletProps } from './types/Leaflet.types';
-import { MapMarkers } from './MapMarkers';
-import { MapShapes } from './MapShapes';
-import { MapLayer } from './types/model';
-import EventHandle from './EventHandle';
-import MyMarker from './MyMarker';
+} from "react-leaflet";
+import Measure from "react-measure";
+import "./styles/markers.css";
+import { LeafletProps } from "./types/Leaflet.types";
+import { MapMarkers } from "./MapMarkers";
+import { MapShapes } from "./MapShapes";
+import { MapLayer } from "./types/model";
+import EventHandle from "./EventHandle";
+import MyMarker from "./MyMarker";
 
 const { BaseLayer } = LayersControl;
 
@@ -35,9 +35,9 @@ interface MapLayersProps {
 
 const Layer = (props: MapLayer): JSX.Element => {
   switch (props.layerType) {
-    case 'ImageOverlay':
+    case "ImageOverlay":
       return <ImageOverlay {...(props as ImageOverlayProps)} />;
-    case 'WMSTileLayer':
+    case "WMSTileLayer":
       return <WMSTileLayer {...(props as WMSTileLayerProps)} />;
     default:
       return <TileLayer {...(props as TileLayerProps)} />;
@@ -62,7 +62,7 @@ const MapLayers = (props: MapLayersProps) => {
           );
         } else {
           return (
-            <Layer key={`layer-${layer.baseLayerName || 'base'}`} {...layer} />
+            <Layer key={`layer-${layer.baseLayerName || "base"}`} {...layer} />
           );
         }
       })}
@@ -130,7 +130,7 @@ export const MapComponent = (props: Props) => {
           ref={measureRef}
           id="map-container"
           style={{
-            position: 'absolute',
+            position: "absolute",
             top: 0,
             bottom: 0,
             backgroundColor: props.backgroundColor,
@@ -142,15 +142,13 @@ export const MapComponent = (props: Props) => {
             <MapContainer
               {...props.mapOptions}
               whenReady={() => {
-                // setMapRef(map);
-
-                onMessage({ tag: 'MapReady', version: '1.0.0' });
+                onMessage({ tag: "MapReady", version: "1.0.0" });
               }}
               center={mapCenterPosition as LatLngExpression}
               maxZoom={maxZoom}
               minZoom={minZoom}
               zoom={zoom}
-              style={{ width: '100%', height: dimensions.height }}
+              style={{ width: "100%", height: dimensions.height }}
             >
               <EventHandle
                 onMessage={onMessage}
@@ -161,13 +159,22 @@ export const MapComponent = (props: Props) => {
                 onMapClick={onMapClick}
               />
               <MapLayers mapLayers={mapLayers} />
-              {onClickMarkerPos ? <MyMarker posClicked={posClicked} /> : null}
+
+              <MyMarker
+                position={{
+                  lat: 1.3198801354409218,
+                  lng: 103.90226028148622,
+                }}
+                toLatLngLiteral={toLatLngLiteral}
+                bounds={bounds}
+                center={center}
+              />
 
               <MapMarkers
                 mapMarkers={mapMarkers}
                 onClick={(mapMarkerId) => {
                   onMessage({
-                    tag: 'onMapMarkerClicked',
+                    tag: "onMapMarkerClicked",
                     mapMarkerId,
                   });
                 }}
