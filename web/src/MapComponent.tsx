@@ -25,7 +25,7 @@ import { MapMarkers } from "./MapMarkers";
 import { MapShapes } from "./MapShapes";
 import { MapLayer } from "./types/model";
 import EventHandle from "./EventHandle";
-import MyMarker from "./MyMarker";
+import OwnPositionMarker from "./OwnPositionMarker";
 
 const { BaseLayer } = LayersControl;
 
@@ -103,7 +103,7 @@ export const MapComponent = (props: Props) => {
     zoom = 13,
     maxZoom = 20,
     minZoom = 11,
-    onClickMarkerPos,
+    ownPositionMarker,
   } = props;
   const [dimensions, setDimensions] = useState({ height: 0, width: 0 });
 
@@ -160,15 +160,17 @@ export const MapComponent = (props: Props) => {
               />
               <MapLayers mapLayers={mapLayers} />
 
-              <MyMarker
-                position={{
-                  lat: 1.3198801354409218,
-                  lng: 103.90226028148622,
-                }}
-                toLatLngLiteral={toLatLngLiteral}
-                bounds={bounds}
-                center={center}
-              />
+              {ownPositionMarker ? (
+                <OwnPositionMarker
+                  mapmarker={ownPositionMarker}
+                  onClick={(mapMarkerId) => {
+                    onMessage({
+                      tag: "onMapMarkerClicked",
+                      mapMarkerId,
+                    });
+                  }}
+                />
+              ) : null}
 
               <MapMarkers
                 mapMarkers={mapMarkers}

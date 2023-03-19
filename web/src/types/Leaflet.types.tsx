@@ -1,12 +1,13 @@
-import type {LatLngLiteral, MapOptions} from 'leaflet';
-import {ReactElement} from 'react';
-import {LeafletWebViewEvent, MapLayer, MapMarker, MapShape} from './model';
+import type { LatLngLiteral, MapOptions } from "leaflet";
+import { ReactElement } from "react";
+import { LeafletWebViewEvent, MapLayer, MapMarker, MapShape } from "./model";
 
 export type LeafletMapProps = {
   mapOptions?: MapOptions;
   mapLayers: MapLayer[];
   mapMarkers?: MapMarker[];
   mapShapes?: MapShape[];
+  ownPositionMarker?: MapMarker;
   mapCenterPosition: LatLngLiteral;
   zoom?: number;
   maxZoom?: number;
@@ -20,4 +21,4 @@ export type LeafletProps = LeafletMapProps & {
   onMessage: (message: LeafletWebViewEvent) => void;
 };
 
-export type {LatLngLiteral, MapOptions} from 'leaflet';
+export type { LatLngLiteral, MapOptions } from "leaflet";

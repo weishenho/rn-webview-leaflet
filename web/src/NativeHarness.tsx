@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { LeafletMapProps } from './types/Leaflet.types';
-import { MapComponent } from './MapComponent';
-import { LeafletWebViewEvent } from './types/model';
-import './styles/index.css';
+import React, { useEffect, useState } from "react";
+import { LeafletMapProps } from "./types/Leaflet.types";
+import { MapComponent } from "./MapComponent";
+import { LeafletWebViewEvent } from "./types/model";
+import "./styles/index.css";
 
 const sendMessage = (message: LeafletWebViewEvent) => {
   // @ts-ignore
@@ -10,7 +10,7 @@ const sendMessage = (message: LeafletWebViewEvent) => {
 };
 
 const sendDebugMessage = (message: string) => {
-  sendMessage({ tag: 'DebugMessage', message });
+  sendMessage({ tag: "DebugMessage", message });
 };
 
 interface Props extends Partial<LeafletMapProps> {
@@ -23,8 +23,8 @@ export const NativeHarness = () => {
     mapLayers: [
       {
         baseLayer: true,
-        url: 'https://maps-{s}.onemap.sg/v3/Default/{z}/{x}/{y}.png',
-        id: 'onemapbase',
+        url: "https://maps-{s}.onemap.sg/v3/Default/{z}/{x}/{y}.png",
+        id: "onemapbase",
         zIndex: 1,
       },
     ],
@@ -33,7 +33,7 @@ export const NativeHarness = () => {
     maxZoom: 18,
     minZoom: 11,
     zoom: 13,
-    onClickMarkerPos: false,
+    ownPositionMarker: undefined,
   });
 
   useEffect(() => {
@@ -49,20 +49,20 @@ export const NativeHarness = () => {
       }
     };
     if (window) {
-      window.addEventListener('message', handleNativeMessage);
+      window.addEventListener("message", handleNativeMessage);
       sendMessage({
-        tag: 'MapComponentMounted',
-        version: '0.1',
+        tag: "MapComponentMounted",
+        version: "0.1",
       });
     } else {
       sendMessage({
-        tag: 'Error',
-        error: 'Unable to add window / document event listeners',
+        tag: "Error",
+        error: "Unable to add window / document event listeners",
       });
     }
     return () => {
       if (window) {
-        window.removeEventListener('message', handleNativeMessage);
+        window.removeEventListener("message", handleNativeMessage);
       }
     };
   }, []);
@@ -90,6 +90,7 @@ export const NativeHarness = () => {
         sendMessage(webViewLeafletEvent);
       }}
       onClickMarkerPos={state.onClickMarkerPos}
+      ownPositionMarker={state.ownPositionMarker}
     />
   );
 };

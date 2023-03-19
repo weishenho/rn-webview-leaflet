@@ -77,6 +77,9 @@ export const LeafletView = ({
     if (!isEqual(mapProps.mapMarkers, previousProps.mapMarkers)) {
       newMapProps.mapMarkers = mapProps.mapMarkers;
     }
+    if (mapProps.ownPositionMarker !== previousProps.ownPositionMarker) {
+      newMapProps.ownPositionMarker = mapProps.ownPositionMarker;
+    }
     if (!isEqual(mapProps.mapOptions, previousProps.mapOptions)) {
       newMapProps.mapOptions = mapProps.mapOptions;
     }

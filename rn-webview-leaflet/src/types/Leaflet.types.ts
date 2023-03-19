@@ -11,6 +11,7 @@ export type LeafletMapProps = {
   mapOptions?: MapOptions;
   mapLayers: MapLayer[];
   mapMarkers?: MapMarker[];
+  ownPositionMarker?: MapMarker;
   mapShapes?: MapShape[];
   mapCenterPosition: LatLngLiteral;
   zoom?: number;
