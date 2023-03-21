@@ -1,5 +1,5 @@
 import { Dimensions, MapMarker as MapMarkerType } from "./types/model";
-import type { LatLngExpression } from "leaflet";
+import type { LatLngExpression, PointExpression } from "leaflet";
 import { DivIcon, divIcon } from "leaflet";
 import React from "react";
 import { Marker, Popup } from "react-leaflet";
@@ -11,21 +11,73 @@ export interface MapMarkersProps {
 }
 
 export const createDivIcon = (mapMarker: MapMarkerType): DivIcon => {
-  const [x, y]: Dimensions = mapMarker.size ?? [24, 24];
-  const html =
-    mapMarker.icon.includes("svg") || mapMarker.icon.includes("SVG")
-      ? `<div style='font-size: ${Math.max(x, y)}px'>${mapMarker.icon}</div>`
-      : mapMarker.icon.includes("//") && mapMarker.icon.includes("http")
-      ? `<img src="${mapMarker.icon}" style="width:${x}px;height:${y}px;">`
-      : mapMarker.icon.includes("base64")
-      ? `<img src="${mapMarker.icon}" style="width:${x}px;height:${y}px;">`
-      : `<div style='font-size: ${Math.max(x, y)}px'>${mapMarker.icon}</div>`;
-
   return divIcon({
     className: "clearMarkerContainer",
-    html,
-    iconAnchor: mapMarker.iconAnchor,
+    html: mapMarker.animation
+      ? getAnimatedHTMLString(
+          mapMarker.icon || "📍",
+          mapMarker.animation || null,
+          mapMarker.size || [24, 24]
+        )
+      : getUnanimatedHTMLString(mapMarker.icon, mapMarker.size),
+    iconAnchor: mapMarker.iconAnchor || [12, 24],
+    iconSize: mapMarker.size,
   });
+};
+
+/*
+  Get the HTML string containing the icon div, and animation parameters
+  */
+export const getAnimatedHTMLString = (
+  icon: any,
+  animation: any,
+  size: PointExpression = [24, 24]
+) => {
+  return `<div class='animationContainer' style="
+animation-name: ${animation.type ? animation.type : "bounce"};
+animation-duration: ${animation.duration ? animation.duration : 1}s ;
+animation-delay: ${animation.delay ? animation.delay : 0}s;
+animation-direction: ${animation.direction ? animation.direction : "normal"};
+animation-iteration-count: ${
+    animation.iterationCount ? animation.iterationCount : "infinite"
+  };
+width:${size[0]}px;height:${size[1]}px;">
+${getIconFromEmojiOrImageOrSVG(icon, size)}
+</div>`;
+};
+
+const getUnanimatedHTMLString = (
+  icon: any,
+  size: PointExpression = [24, 24]
+): string => {
+  return `<div class='unanimatedIconContainer'>${getIconFromEmojiOrImageOrSVG(
+    icon,
+    size
+  )}</div>`;
+};
+
+const getIconFromEmojiOrImageOrSVG = (icon: any, size: PointExpression) => {
+  if (icon.includes("svg") || icon.includes("SVG")) {
+    //@ts-ignore
+    return ` <div style='font-size: ${Math.max(size[0], size[1])}px'>
+${icon}
+</div>`;
+  } else if (icon.includes("//") && icon.includes("http")) {
+    //@ts-ignore
+
+    return `<img src="${icon}" style="width:${size[0]}px;height:${size[1]}px;">`;
+  } else if (icon.includes("base64")) {
+    //@ts-ignore
+
+    return `<img src="${base64Image}" style="width:${size[0]}px;height:${size[1]}px;">`;
+  } else {
+    return `<div style='font-size: ${Math.max(
+      //@ts-ignore
+      size[0],
+      //@ts-ignore
+      size[1]
+    )}px'>${icon}</div>`;
+  }
 };
 
 export const MapMarker = ({

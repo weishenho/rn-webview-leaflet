@@ -13,7 +13,7 @@ import LoadingIndicator from './LoadingIndicator';
 import type { LeafletMapProps, LeafletProps } from './types/Leaflet.types';
 
 const LEAFLET_HTML_SOURCE = Platform.select({
-  ios: require('../android/app/src/main/assets/Leaflet.html'),
+  ios: require('../android/src/main/assets/Leaflet.html'),
   android: { uri: 'file:///android_asset/Leaflet.html' },
 });
 

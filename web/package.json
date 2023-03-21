@@ -26,7 +26,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "postbuild": "gulp build && npm run copydist",
-    "copydist": "cp -R ./dist/ ../../libs/shared-mobile/assets/"
+    "copydist": "cp -R ./dist/ ../rn-webview-leaflet/android/src/main/assets/"
   },
   "eslintConfig": {
     "extends": [

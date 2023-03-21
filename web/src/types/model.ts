@@ -61,6 +61,7 @@ export type MapMarker = {
   size?: Dimensions;
   title?: string;
   ownPositionMarker?: boolean;
+  animation?: any;
 };
 
 export type MapLayer = {
