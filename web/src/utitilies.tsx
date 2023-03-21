@@ -41,7 +41,13 @@ animation-direction: ${animation.direction ? animation.direction : "normal"};
 animation-iteration-count: ${
     animation.iterationCount ? animation.iterationCount : "infinite"
   };
-width:${size[0]}px;height:${size[1]}px;">
+width:${
+    //@ts-ignore
+    size[0]
+  }px;height:${
+    //@ts-ignore
+    size[1]
+  }px;">
 ${getIconFromEmojiOrImageOrSVG(icon, size)}
 </div>`;
 };
