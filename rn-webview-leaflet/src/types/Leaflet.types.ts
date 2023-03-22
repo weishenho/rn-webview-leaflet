@@ -1,4 +1,5 @@
-import type { LatLngLiteral, MapOptions } from './L.types';
+import type { LatLngLiteral, MapOptions } from 'leaflet';
+export type { LatLngLiteral, MapOptions } from 'leaflet';
 
 import type {
   LeafletWebViewEvent,
@@ -26,5 +27,3 @@ export type LeafletProps = LeafletMapProps & {
   onMapLoad?: () => void;
   onMessage: (message: LeafletWebViewEvent) => void;
 };
-
-export type { LatLngLiteral, MapOptions } from './L.types';

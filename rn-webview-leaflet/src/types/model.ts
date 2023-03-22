@@ -7,8 +7,8 @@ import type {
   LatLngLiteral,
   PathOptions,
   PointTuple,
-  PolylineOptions,
-} from './L.types';
+  PolylineOptions
+} from 'leaflet';
 
 export type Dimensions = [width: number, height: number];
 
