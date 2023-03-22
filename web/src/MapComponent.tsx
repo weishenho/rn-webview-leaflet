@@ -29,6 +29,7 @@ import { MapShapes } from "./MapShapes";
 import { MapLayer } from "./types/model";
 import EventHandle from "./EventHandle";
 import OwnPositionMarker from "./OwnPositionMarker";
+import { renderToString } from "react-dom/server";
 
 const { BaseLayer } = LayersControl;
 
@@ -322,10 +323,34 @@ export const MapComponent = (props: Props) => {
                 <Marker
                   key="direction-indicator"
                   position={{ lat: intersectPoint.y, lng: intersectPoint.x }}
+                  eventHandlers={{
+                    click: (event) => {
+                      // console.log({ event });
+                    },
+                  }}
                   icon={L.divIcon({
-                    html: `<img src="./arrow.png" style="transform: rotate(${-direction}rad)"></img>`,
-                    iconSize: [24, 24],
-                    iconAnchor: [12, 12],
+                    html: renderToString(
+                      <div id="indicator-container">
+                        <div
+                          style={{
+                            transform: `rotate(${-direction}rad)`,
+                          }}
+                          id="arrow-container"
+                        >
+                          <img
+                            src="./arrow.png"
+                            height="14px"
+                            width="14px"
+                            id="arrow"
+                          ></img>
+                        </div>
+                        <div style={{ position: "absolute", fontSize: 16 }}>
+                          🆘
+                        </div>
+                      </div>
+                    ),
+                    iconSize: [34, 34],
+                    iconAnchor: [17, 17],
                     className: "clearMarkerContainer",
                   })}
                 />

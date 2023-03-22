@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { LeafletMapProps } from "./types/Leaflet.types";
 import { MapComponent } from "./MapComponent";
 import { LeafletWebViewEvent } from "./types/model";
-import "./styles/index.css";
 
 const sendMessage = (message: LeafletWebViewEvent) => {
   // @ts-ignore
