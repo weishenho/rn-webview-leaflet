@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react';
-import { useMapEvents } from 'react-leaflet';
-import { LeafletWebViewEvent } from './types/model';
+import React, { useEffect } from "react";
+import { useMapEvents } from "react-leaflet";
+import { LeafletWebViewEvent } from "./types/model";
 import type {
   LatLng,
+  LatLngBounds,
   LatLngBoundsLiteral,
   LatLngLiteral,
   LeafletMouseEvent,
   Map as LeafletMap,
-} from 'leaflet';
+} from "leaflet";
 type Props = {
   onMessage: (message: LeafletWebViewEvent) => void;
   toLatLngLiteral: (latLng: LatLng) => LatLngLiteral;
@@ -15,6 +16,8 @@ type Props = {
   center: (map?: LeafletMap | null) => LatLngLiteral;
   mapCenterPosition?: LatLngLiteral;
   onMapClick?: (pos: LatLngLiteral) => void;
+  setCenterPos: (x: LatLngLiteral) => void;
+  setCurBound: (x: LatLngBounds) => void;
 };
 
 const EventHandle = ({
@@ -24,6 +27,8 @@ const EventHandle = ({
   center,
   mapCenterPosition,
   onMapClick,
+  setCenterPos,
+  setCurBound,
 }: Props): null => {
   const map = useMapEvents({
     click: (event: LeafletMouseEvent) => {
@@ -33,21 +38,23 @@ const EventHandle = ({
         onMapClick(latlng);
       }
       onMessage({
-        tag: 'onMapClicked',
+        tag: "onMapClicked",
         location: toLatLngLiteral(latlng),
       });
     },
     move: () => {
       onMessage({
-        tag: 'onMove',
+        tag: "onMove",
         bounds: bounds(map),
         mapCenter: center(map),
         zoom: map.getZoom()!,
       });
     },
     moveend: () => {
+      setCenterPos(center(map));
+      setCurBound(map.getBounds());
       onMessage({
-        tag: 'onMoveEnd',
+        tag: "onMoveEnd",
         bounds: bounds(map),
         mapCenter: center(map),
         zoom: map.getZoom()!,
@@ -55,7 +62,7 @@ const EventHandle = ({
     },
     movestart: () => {
       onMessage({
-        tag: 'onMoveStart',
+        tag: "onMoveStart",
         bounds: bounds(map),
         mapCenter: center(map),
         zoom: map.getZoom()!,
@@ -63,7 +70,7 @@ const EventHandle = ({
     },
     resize: () => {
       onMessage({
-        tag: 'onResize',
+        tag: "onResize",
         bounds: bounds(map),
         mapCenter: center(map),
         zoom: map?.getZoom()!,
@@ -71,7 +78,7 @@ const EventHandle = ({
     },
     unload: () => {
       onMessage({
-        tag: 'onUnload',
+        tag: "onUnload",
         bounds: bounds(map),
         mapCenter: center(map),
         zoom: map?.getZoom()!,
@@ -79,15 +86,18 @@ const EventHandle = ({
     },
     zoom: () => {
       onMessage({
-        tag: 'onZoom',
+        tag: "onZoom",
         bounds: bounds(map),
         mapCenter: center(map),
         zoom: map?.getZoom()!,
       });
     },
     zoomend: () => {
+      setCenterPos(center(map));
+      setCurBound(map.getBounds());
+
       onMessage({
-        tag: 'onZoomEnd',
+        tag: "onZoomEnd",
         bounds: bounds(map),
         mapCenter: center(map),
         zoom: map?.getZoom()!,
@@ -95,7 +105,7 @@ const EventHandle = ({
     },
     zoomlevelschange: () => {
       onMessage({
-        tag: 'onZoomLevelsChange',
+        tag: "onZoomLevelsChange",
         bounds: bounds(map),
         mapCenter: center(map),
         zoom: map?.getZoom()!,
@@ -103,7 +113,7 @@ const EventHandle = ({
     },
     zoomstart: () => {
       onMessage({
-        tag: 'onZoomStart',
+        tag: "onZoomStart",
         bounds: bounds(map),
         mapCenter: center(map),
         zoom: map?.getZoom()!,
@@ -113,9 +123,9 @@ const EventHandle = ({
 
   useEffect(() => {
     if (map && mapCenterPosition) {
-      console.log('mapCenterPosition');
+      console.log("mapCenterPosition");
       onMessage({
-        tag: 'DebugMessage',
+        tag: "DebugMessage",
         message: `Flying to ${mapCenterPosition.lat},${mapCenterPosition.lng}`,
       });
       map.flyTo(mapCenterPosition, map.getZoom());

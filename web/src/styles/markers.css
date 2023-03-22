@@ -8,8 +8,7 @@
 /* div containing the marker parent */
 .clearMarkerContainer {
   background-color: rgba(57, 57, 216, 0);
-  display: flex;
-  justify-content: center;
+
 }
 
 /* div containing all the animated portions of the marker */
