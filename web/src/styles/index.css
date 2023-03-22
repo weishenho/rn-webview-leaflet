@@ -19,7 +19,7 @@ code {
 #arrow-container {
   width: 30px;
   height: 30px;
-  background-color: white;
+  background-color: rgba(255, 0, 0, 0.5);
   border-radius: 30px;
   border: 3px solid rgba(255, 0, 0, 1);
   display: flex;
