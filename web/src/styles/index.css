@@ -17,20 +17,21 @@ code {
 }
 
 #arrow-container {
-  width: 30px;
-  height: 30px;
-  background-color: rgba(255, 0, 0, 0.5);
-  border-radius: 30px;
-  border: 3px solid rgba(255, 0, 0, 1);
+  width: 35px;
+  height: 35px;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 35px;
+  border: 1px solid #ffffff88;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.8);
 }
 
 #indicator-container {
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   display: flex;
   flex-direction: column;
   align-items: center;

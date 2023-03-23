@@ -157,16 +157,17 @@ const MarkerIndicator = ({ markerPos, centerPos, curBound }: Props) => {
               >
                 <img
                   src="./arrow.png"
-                  height="14px"
-                  width="14px"
+                  height="16px"
+                  width="16px"
                   id="arrow"
+                  alt="arrow"
                 ></img>
               </div>
               <div style={{ position: "absolute", fontSize: 16 }}>🆘</div>
             </div>
           ),
-          iconSize: [34, 34],
-          iconAnchor: [17, 17],
+          iconSize: [50, 50],
+          iconAnchor: [25, 25],
           className: "clearMarkerContainer",
         })}
       />
