@@ -161,6 +161,10 @@ export const MapComponent = (props: Props) => {
               minZoom={minZoom}
               zoom={zoom}
               style={{ width: "100%", height: dimensions.height }}
+              maxBounds={[
+                [1.1443, 103.596],
+                [1.4835, 104.4309],
+              ]}
             >
               <EventHandle
                 onMessage={onMessage}
@@ -178,9 +182,9 @@ export const MapComponent = (props: Props) => {
                 mapmarker={{
                   id: "own",
                   position: markerPos,
-                  icon: "🆘",
-                  size: [16, 16],
-                  iconAnchor: [8, 8],
+                  icon: "cat.png",
+                  size: [32, 32],
+                  iconAnchor: [32 / 2, 32 / 2],
                 }}
                 onClick={(mapMarkerId) => {
                   onMessage({

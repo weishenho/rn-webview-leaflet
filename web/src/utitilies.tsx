@@ -68,7 +68,7 @@ const getIconFromEmojiOrImageOrSVG = (icon: any, size: PointExpression) => {
     return ` <div style='font-size: ${Math.max(size[0], size[1])}px'>
 ${icon}
 </div>`;
-  } else if (icon.includes("//") && icon.includes("http")) {
+  } else if (icon.includes("//") || icon.includes("http") || icon.includes(".png")) {
     //@ts-ignore
 
     return `<img src="${icon}" style="width:${size[0]}px;height:${size[1]}px;">`;

@@ -180,7 +180,16 @@ const MarkerIndicator = ({ markerPos, centerPos, curBound }: Props) => {
                   alt="arrow"
                 ></img>
               </div>
-              <div style={{ position: "absolute", fontSize: 16 }}>🆘</div>
+              <div id="icon-container">
+                <img
+                  src="cat.png"
+                  style={{
+                    width: 35,
+                    height: 35,
+                  }}
+                  alt="cat"
+                />
+              </div>
             </div>
           ),
           iconSize: [50, 50],

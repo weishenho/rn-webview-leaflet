@@ -25,6 +25,8 @@ export const NativeHarness = () => {
         url: "https://maps-{s}.onemap.sg/v3/Default/{z}/{x}/{y}.png",
         id: "onemapbase",
         zIndex: 1,
+        attribution:
+          '<img src="https://www.onemap.gov.sg/docs/maps/images/oneMap64-01.png" style="height:20px;width:20px;"/> OneMap | Map data &copy; contributors, <a href="http://SLA.gov.sg">Singapore Land Authority</a>',
       },
     ],
     mapMarkers: [],
