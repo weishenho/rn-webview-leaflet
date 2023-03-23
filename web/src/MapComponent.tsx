@@ -178,7 +178,9 @@ export const MapComponent = (props: Props) => {
                 mapmarker={{
                   id: "own",
                   position: markerPos,
-                  icon: "📍",
+                  icon: "🆘",
+                  size: [16, 16],
+                  iconAnchor: [8, 8],
                 }}
                 onClick={(mapMarkerId) => {
                   onMessage({

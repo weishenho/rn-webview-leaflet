@@ -69,6 +69,8 @@ const EventHandle = ({
       });
     },
     resize: () => {
+      setCenterPos(center(map));
+      setCurBound(map.getBounds());
       onMessage({
         tag: "onResize",
         bounds: bounds(map),

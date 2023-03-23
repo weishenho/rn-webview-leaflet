@@ -41,6 +41,22 @@ function intersect(
   return { x, y };
 }
 
+const pad = (
+  curBound: LatLngBounds,
+  bufferRatioWidth: number,
+  bufferRatioHeight: number
+) => {
+  const sw = curBound.getSouthWest();
+  const ne = curBound.getNorthEast();
+  const heightBuffer = Math.abs(sw.lat - ne.lat) * bufferRatioHeight;
+  const widthBuffer = Math.abs(sw.lng - ne.lng) * bufferRatioWidth;
+
+  return new L.LatLngBounds(
+    new L.LatLng(sw.lat - heightBuffer, sw.lng - widthBuffer),
+    new L.LatLng(ne.lat + heightBuffer, ne.lng + widthBuffer)
+  );
+};
+
 const isMarkerOutBound = (
   markerPos: LatLngLiteral,
   bounds: LatLngBounds
@@ -67,13 +83,14 @@ const MarkerIndicator = ({ markerPos, centerPos, curBound }: Props) => {
       );
     }
     return undefined;
-  }, [centerPos, curBound]);
+  }, [centerPos, curBound, markerPos]);
 
   const intersectPoint = useMemo(() => {
     if (!curBound || !markerPos || !centerPos) {
       return undefined;
     }
-    const bounds2 = curBound.pad(-0.05);
+    const bounds2 = pad(curBound, -0.04, -0.07);
+
     if (isMarkerOutBound(markerPos, curBound)) {
       const southIntersect = intersect(
         markerPos.lng,
