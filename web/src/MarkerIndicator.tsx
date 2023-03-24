@@ -3,43 +3,11 @@ import React, { useMemo } from "react";
 import { Marker, useMap } from "react-leaflet";
 import L from "leaflet";
 import { renderToString } from "react-dom/server";
+import { point, lineString, polygon } from "@turf/helpers";
+import bearing from "@turf/bearing";
+import lineOverlap from "@turf/line-overlap";
+import lineIntersect from "@turf/line-intersect";
 
-function intersect(
-  x1: number,
-  y1: number,
-  x2: number,
-  y2: number,
-  x3: number,
-  y3: number,
-  x4: number,
-  y4: number
-) {
-  // Check if none of the lines are of length 0
-  if ((x1 === x2 && y1 === y2) || (x3 === x4 && y3 === y4)) {
-    return false;
-  }
-
-  let denominator = (y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1);
-
-  // Lines are parallel
-  if (denominator === 0) {
-    return false;
-  }
-
-  let ua = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / denominator;
-  let ub = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / denominator;
-
-  // is the intersection along the segments
-  if (ua < 0 || ua > 1 || ub < 0 || ub > 1) {
-    return false;
-  }
-
-  // Return a object with the x and y coordinates of the intersection
-  let x = x1 + ua * (x2 - x1);
-  let y = y1 + ua * (y2 - y1);
-
-  return { x, y };
-}
 
 const pad = (
   curBound: LatLngBounds,
@@ -76,11 +44,12 @@ const MarkerIndicator = ({ markerPos, centerPos, curBound }: Props) => {
     if (!curBound || !markerPos || !centerPos) {
       return undefined;
     }
+
     if (isMarkerOutBound(markerPos, curBound)) {
-      return Math.atan2(
-        markerPos.lat - centerPos.lat,
-        markerPos.lng - centerPos.lng
-      );
+      const point2 = point([centerPos.lng, centerPos.lat]);
+      const point1 = point([markerPos.lng, markerPos.lat]);
+      const angle = bearing(point1, point2) + 90;
+      return angle;
     }
     return undefined;
   }, [centerPos, curBound, markerPos]);
@@ -92,61 +61,40 @@ const MarkerIndicator = ({ markerPos, centerPos, curBound }: Props) => {
     const bounds2 = pad(curBound, -0.04, -0.07);
 
     if (isMarkerOutBound(markerPos, curBound)) {
-      const southIntersect = intersect(
-        markerPos.lng,
-        markerPos.lat,
-        centerPos.lng,
-        centerPos.lat,
-        bounds2.getSouthWest().lng,
-        bounds2.getSouthWest().lat,
-        bounds2.getSouthEast().lng,
-        bounds2.getSouthEast().lat
-      );
+      const line1 = lineString([
+        [markerPos.lng, markerPos.lat],
+        [centerPos.lng, centerPos.lat],
+      ]);
 
-      if (southIntersect) {
-        return southIntersect;
-      }
-      const eastIntersect = intersect(
-        markerPos.lng,
-        markerPos.lat,
-        centerPos.lng,
-        centerPos.lat,
-        bounds2.getNorthEast().lng,
-        bounds2.getNorthEast().lat,
-        bounds2.getSouthEast().lng,
-        bounds2.getSouthEast().lat
-      );
+      const boundLines = [
+        [
+          [bounds2.getSouthWest().lng, bounds2.getSouthWest().lat],
+          [bounds2.getSouthEast().lng, bounds2.getSouthEast().lat],
+        ],
+        [
+          [bounds2.getNorthEast().lng, bounds2.getNorthEast().lat],
+          [bounds2.getSouthEast().lng, bounds2.getSouthEast().lat],
+        ],
+        [
+          [bounds2.getNorthWest().lng, bounds2.getNorthWest().lat],
+          [bounds2.getNorthEast().lng, bounds2.getNorthEast().lat],
+        ],
+        [
+          [bounds2.getNorthWest().lng, bounds2.getNorthWest().lat],
+          [bounds2.getSouthWest().lng, bounds2.getSouthWest().lat],
+        ],
+      ];
 
-      if (eastIntersect) {
-        return eastIntersect;
-      }
-
-      const northIntersect = intersect(
-        markerPos.lng,
-        markerPos.lat,
-        centerPos.lng,
-        centerPos.lat,
-        bounds2.getNorthWest().lng,
-        bounds2.getNorthWest().lat,
-        bounds2.getNorthEast().lng,
-        bounds2.getNorthEast().lat
-      );
-      if (northIntersect) {
-        return northIntersect;
-      }
-
-      const westIntersect = intersect(
-        markerPos.lng,
-        markerPos.lat,
-        centerPos.lng,
-        centerPos.lat,
-        bounds2.getNorthWest().lng,
-        bounds2.getNorthWest().lat,
-        bounds2.getSouthWest().lng,
-        bounds2.getSouthWest().lat
-      );
-      if (westIntersect) {
-        return westIntersect;
+      for (let line of boundLines) {
+        const line2 = lineString(line);
+        const intersectPoint = lineIntersect(line1, line2);
+        if (
+          Array.isArray(intersectPoint.features) &&
+          intersectPoint.features.length > 0
+        ) {
+          const geo = intersectPoint.features[0].geometry.coordinates;
+          return { x: geo[0], y: geo[1] };
+        }
       }
     }
     return undefined;
@@ -168,7 +116,7 @@ const MarkerIndicator = ({ markerPos, centerPos, curBound }: Props) => {
             <div id="indicator-container">
               <div
                 style={{
-                  transform: `rotate(${-direction}rad)`,
+                  transform: `rotate(${direction}deg)`,
                 }}
                 id="arrow-container"
               >
