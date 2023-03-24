@@ -3,9 +3,8 @@ import React, { useMemo } from "react";
 import { Marker, useMap } from "react-leaflet";
 import L from "leaflet";
 import { renderToString } from "react-dom/server";
-import { point, lineString, polygon } from "@turf/helpers";
+import { point, lineString } from "@turf/helpers";
 import bearing from "@turf/bearing";
-import lineOverlap from "@turf/line-overlap";
 import lineIntersect from "@turf/line-intersect";
 
 
