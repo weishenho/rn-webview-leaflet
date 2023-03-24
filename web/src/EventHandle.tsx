@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useMapEvents } from "react-leaflet";
 import { LeafletWebViewEvent } from "./types/model";
+
 import type {
   LatLng,
   LatLngBounds,
@@ -30,6 +31,7 @@ const EventHandle = ({
   setCenterPos,
   setCurBound,
 }: Props): null => {
+
   const map = useMapEvents({
     click: (event: LeafletMouseEvent) => {
       const { latlng } = event;
@@ -43,6 +45,8 @@ const EventHandle = ({
       });
     },
     move: () => {
+      setCenterPos(center(map));
+      setCurBound(map.getBounds());
       onMessage({
         tag: "onMove",
         bounds: bounds(map),
